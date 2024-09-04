@@ -1,9 +1,9 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cliente, Proveedor, Producto, Venta
-from .forms import ClienteForm, ProveedorForm, VentaForm
+from .forms import ClienteForm, ProveedorForm, VentaForm, ProductoForm
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
 from .serializers import ClienteSerializer, ProductoSerializer, VentaSerializer
@@ -112,7 +112,46 @@ def venta_delete(request, pk):
     return render(request, 'inventory/venta_confirm_delete.html', {'venta': venta})
 
 
-# Similar para clientes, proveedores y ventas
+
+
+# Vista para listar productos
+class ProductoListView(ListView):
+    model = Producto
+    template_name = 'product_list.html'
+    context_object_name = 'productos'
+
+# Vista para ver el detalle de un producto
+class ProductoDetailView(DetailView):
+    model = Producto
+    template_name = 'product_detail.html'
+    context_object_name = 'producto'
+
+# Vista para crear un nuevo producto
+#class ProductoCreateView(CreateView):
+ #   model = Producto
+  #  template_name = 'product_form.html'
+   # fields = ['nombre', 'categoria', 'precio', 'stock']
+   # success_url = reverse_lazy('producto-list')
+    
+class ProductoCreateView(CreateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = 'producto_form.html'
+    success_url = '/inventory/productos/'    
+
+# Vista para editar un producto existente
+class ProductoUpdateView(UpdateView):
+    model = Producto
+    template_name = 'product_form.html'
+    fields = ['nombre', 'categoria', 'precio', 'stock']
+    success_url = reverse_lazy('producto-list')
+
+# Vista para eliminar un producto existente
+class ProductoDeleteView(DeleteView):
+    model = Producto
+    template_name = 'product_confirm_delete.html'
+    success_url = reverse_lazy('producto-list')
+
 
 class ClienteListView(ListView):
     model = Cliente
@@ -124,9 +163,10 @@ class ClienteListView(ListView):
 
 class ClienteCreateView(CreateView):
     model = Cliente
+    fields = ['nombre', 'direccion', 'telefono']  # Asegúrate de que estos campos existan en tu modelo
     template_name = 'cliente_form.html'  # Nombre de la plantilla para el formulario
-    fields = ['nombre', 'email', 'telefono']  # Campos que deseas incluir en el formulario
-    
+    success_url = reverse_lazy('cliente-list')  # Redirige después de una creación exitosa
+       
 class ClienteUpdateView(UpdateView):
     model = Cliente
     template_name = 'cliente_form.html'  # Usa el mismo template para el formulario de actualización

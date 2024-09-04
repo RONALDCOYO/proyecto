@@ -4,7 +4,8 @@ from . import views
 from .views import (
     ClienteListView, ClienteCreateView, ClienteUpdateView, ClienteDeleteView,
     ProveedorListView, ProveedorCreateView, ProveedorUpdateView, ProveedorDeleteView,
-    VentaListView, VentaCreateView, VentaUpdateView, VentaDeleteView
+    VentaListView, VentaCreateView, VentaUpdateView, VentaDeleteView, ProductoListView, ProductoDetailView,
+    ProductoCreateView, ProductoUpdateView, ProductoDeleteView
 )
 
 
@@ -14,10 +15,14 @@ router.register(r'productos', views.ProductoViewSet)
 router.register(r'ventas', views.VentaViewSet)
 
 urlpatterns = [
-    path('productos/', views.lista_productos, name='lista_productos'),
-    path('productos/<int:pk>/', views.detalle_producto, name='detalle_producto'),
-    # Similar para clientes, proveedores y ventas
-     # URLs para Cliente
+        
+    path('productos/', ProductoListView.as_view(), name='producto-list'),
+    path('productos/<int:pk>/', ProductoDetailView.as_view(), name='producto-detalle'),
+    path('productos/nuevo/', ProductoCreateView.as_view(), name='producto-nuevo'),
+    path('productos/<int:pk>/editar/', ProductoUpdateView.as_view(), name='producto-editar'),
+    path('productos/<int:pk>/eliminar/', ProductoDeleteView.as_view(), name='producto-eliminar'),
+    
+    
     path('clientes/', ClienteListView.as_view(), name='cliente_list'),
     path('clientes/nuevo/', ClienteCreateView.as_view(), name='cliente_create'),
     path('clientes/editar/<int:pk>/', ClienteUpdateView.as_view(), name='cliente_update'),
