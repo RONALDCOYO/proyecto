@@ -1,0 +1,8 @@
+<!-- templates/inventory/cliente_confirm_delete.html -->
+<h2>Eliminar Cliente</h2>
+<p>¿Estás seguro de que deseas eliminar el cliente "{{ cliente.nombre }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'cliente_list' %}">Cancelar</a>

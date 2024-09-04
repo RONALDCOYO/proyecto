@@ -1,0 +1,22 @@
+<!-- templates/inventory/venta_list.html -->
+<h2>Lista de Ventas</h2>
+<table>
+    <tr>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Monto Total</th>
+        <th>Acciones</th>
+    </tr>
+    {% for venta in ventas %}
+    <tr>
+        <td>{{ venta.cliente.nombre }}</td>
+        <td>{{ venta.fecha }}</td>
+        <td>{{ venta.monto_total }}</td>
+        <td>
+            <a href="{% url 'venta_update' venta.id %}">Editar</a> |
+            <a href="{% url 'venta_delete' venta.id %}">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'venta_create' %}">Registrar Venta</a>

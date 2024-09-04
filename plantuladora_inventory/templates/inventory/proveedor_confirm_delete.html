@@ -1,0 +1,8 @@
+<!-- templates/inventory/proveedor_confirm_delete.html -->
+<h2>Eliminar Proveedor</h2>
+<p>¿Estás seguro de que deseas eliminar el proveedor "{{ proveedor.nombre }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'proveedor_list' %}">Cancelar</a>

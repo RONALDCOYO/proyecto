@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'inventory',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +79,7 @@ DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'inventarios',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': '123ABCJG',
         'HOST': 'localhost',
         'PORT': '5432',

@@ -1,0 +1,22 @@
+<!-- templates/inventory/cliente_list.html -->
+<h2>Lista de Clientes</h2>
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+    </tr>
+    {% for cliente in clientes %}
+    <tr>
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.email }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>
+            <a href="{% url 'cliente_update' cliente.id %}">Editar</a> |
+            <a href="{% url 'cliente_delete' cliente.id %}">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'cliente_create' %}">Agregar Cliente</a>

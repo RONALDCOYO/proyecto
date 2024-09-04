@@ -1,0 +1,8 @@
+<!-- templates/inventory/proveedor_form.html -->
+<h2>{% if form.instance.pk %}Editar Proveedor{% else %}Crear Proveedor{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'proveedor_list' %}">Cancelar</a>

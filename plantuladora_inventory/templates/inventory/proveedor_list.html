@@ -1,0 +1,22 @@
+<!-- templates/inventory/proveedor_list.html -->
+<h2>Lista de Proveedores</h2>
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+    </tr>
+    {% for proveedor in proveedores %}
+    <tr>
+        <td>{{ proveedor.nombre }}</td>
+        <td>{{ proveedor.email }}</td>
+        <td>{{ proveedor.telefono }}</td>
+        <td>
+            <a href="{% url 'proveedor_update' proveedor.id %}">Editar</a> |
+            <a href="{% url 'proveedor_delete' proveedor.id %}">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'proveedor_create' %}">Agregar Proveedor</a>

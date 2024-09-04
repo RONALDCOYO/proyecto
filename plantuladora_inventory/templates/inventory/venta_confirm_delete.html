@@ -1,0 +1,8 @@
+<!-- templates/inventory/venta_confirm_delete.html -->
+<h2>Eliminar Venta</h2>
+<p>¿Estás seguro de que deseas eliminar la venta realizada el "{{ venta.fecha }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar</button>
+</form>
+<a href="{% url 'venta_list' %}">Cancelar</a>
