@@ -1,4 +1,6 @@
 from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cliente, Proveedor, Producto, Venta
 from .forms import ClienteForm, ProveedorForm, VentaForm
@@ -119,6 +121,62 @@ class ClienteListView(ListView):
 
     def get_queryset(self):
         return Cliente.objects.all()  # Retorna todos los clientes, puedes modificar este queryset si es necesario
+
+class ClienteCreateView(CreateView):
+    model = Cliente
+    template_name = 'cliente_form.html'  # Nombre de la plantilla para el formulario
+    fields = ['nombre', 'email', 'telefono']  # Campos que deseas incluir en el formulario
+    
+class ClienteUpdateView(UpdateView):
+    model = Cliente
+    template_name = 'cliente_form.html'  # Usa el mismo template para el formulario de actualización
+    fields = ['nombre', 'email', 'telefono']    
+
+class ClienteDeleteView(DeleteView):
+    model = Cliente
+    template_name = 'cliente_confirm_delete.html'
+    success_url = reverse_lazy('clientes-list')  # Redirige a la lista de clientes después de eliminar
+
+class ProveedorListView(ListView):
+    model = Proveedor
+    template_name = 'proveedor_list.html'
+    context_object_name = 'proveedores'
+
+class ProveedorCreateView(CreateView):
+    model = Proveedor
+    template_name = 'proveedor_form.html'
+    fields = ['nombre', 'direccion', 'telefono']  # Ajusta los campos según tu modelo
+
+class ProveedorUpdateView(UpdateView):
+    model = Proveedor
+    template_name = 'proveedor_form.html'
+    fields = ['nombre', 'direccion', 'telefono']  # Ajusta los campos según tu modelo
+
+class ProveedorDeleteView(DeleteView):
+    model = Proveedor
+    template_name = 'proveedor_confirm_delete.html'
+    success_url = '/proveedores/'  # Redirige a la lista de proveedores tras la eliminación
+    
+class VentaListView(ListView):
+    model = Venta
+    template_name = 'venta_list.html'    
+    
+class VentaCreateView(CreateView):
+    model = Venta
+    fields = ['campo1', 'campo2', 'campo3']  # Reemplaza con los campos de tu modelo
+    template_name = 'venta_form.html'
+    success_url = '/ventas/'  # Redirige a la lista de ventas después de la creación
+
+class VentaUpdateView(UpdateView):
+    model = Venta
+    fields = ['campo1', 'campo2', 'campo3']  # Reemplaza con los campos de tu modelo
+    template_name = 'venta_form.html'
+    success_url = '/ventas/'  # Redirige a la lista de ventas después de la actualización
+
+class VentaDeleteView(DeleteView):
+    model = Venta
+    template_name = 'venta_confirm_delete.html'
+    success_url = reverse_lazy('venta-list')  # Redirige a la lista de ventas después de la eliminación
 
 
 class ClienteViewSet(viewsets.ModelViewSet):
