@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f8jd_-b+h#n^86b$_%4uqf#4-6+=z46mq_@!=^3v_85@z@f^3z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rce.grodco.com.co', 'localhost', '192.168.0.56']
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
 
 
 # Lista de mensajes
