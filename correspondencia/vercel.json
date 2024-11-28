@@ -1,0 +1,14 @@
+{
+    "builds" : [
+        {
+            "src": "correspondencia/wsgi.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "correspondencia/wsgi.py"
+        }
+    ]
+}
