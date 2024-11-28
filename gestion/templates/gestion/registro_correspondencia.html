@@ -1,0 +1,257 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Correspondencia - {{ empresa.nombre }}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .respuesta-necesaria {
+            background-color: #fff175; /* Color amarillo para resaltar */
+            font-weight: bold;
+        }
+        .alerta {
+            color: rgb(248, 230, 230);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        
+        {% if empresa.logo %}
+            <div class="text-center mb-4">
+                <img src="{{ empresa.logo.url }}" alt="{{ empresa.nombre }} Logo" class="img-fluid" style="max-height: 150px;">
+            </div>
+        {% endif %}
+
+        <h1 class="text-center">Control de Correspondencia para {{ empresa.nombre }}</h1>
+
+        <!-- Mostrar alerta si la correspondencia necesita respuesta -->
+        {% if correspondencia_necesita_respuesta %}
+            <div class="alert alert-danger text-center alerta">
+                ¡Alerta! Esta correspondencia requiere una respuesta.
+            </div>
+        {% endif %}
+
+        <!-- Formulario para agregar correspondencia -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Registrar Correspondencia</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" class="form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_tipo_correspondencia">Tipo de Correspondencia:</label>
+                        {{ form.tipo_correspondencia|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="id_dependencia">Dependencia:</label>
+                        {{ form.dependencia|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="id_entrada_salida">Entrada o Salida:</label>
+                        {{ form.entrada_salida|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="id_documento">Documento:</label>
+                        {{ form.documento|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_fecha">Fecha:</label>
+                        {{ form.fecha|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_asunto">Asunto:</label>
+                        {{ form.asunto|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_remitente">Remitente:</label>
+                        {{ form.remitente|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_destinatario">Destinatario:</label>
+                        {{ form.destinatario|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_necesita_respuesta">¿Requiere Respuesta?</label>
+                        {{ form.necesita_respuesta|add_class:"form-control" }}
+                    </div>
+
+                    <!-- Campo de "días para responder" que se mostrará solo si se selecciona "Necesita respuesta" -->
+                    <div id="dias-para-responder-container" class="form-group" style="display: none;">
+                        <label for="id_dias_para_responder">Días para responder:</label>
+                        {{ form.dias_para_responder|add_class:"form-control" }}
+                    </div>
+
+                    <!-- Mostrar errores no relacionados a campos individuales -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- JavaScript para manejar la visibilidad del campo "Días para Responder" -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Inicialmente, si la opción "Necesita respuesta" está seleccionada, mostrar el campo de días
+                toggleDiasParaResponder();
+
+                // Al cambiar la selección de "Necesita respuesta", mostrar u ocultar el campo de días
+                $('#id_necesita_respuesta').change(function() {
+                    toggleDiasParaResponder();
+                });
+
+                function toggleDiasParaResponder() {
+                    var necesitaRespuesta = $('#id_necesita_respuesta').is(':checked');
+                    if (necesitaRespuesta) {
+                        $('#dias-para-responder-container').show(); // Mostrar campo de días
+                    } else {
+                        $('#dias-para-responder-container').hide(); // Ocultar campo de días
+                        $('#id_dias_para_responder').val(''); // Limpiar valor si no se requiere respuesta
+                    }
+                }
+            });
+        </script>
+
+        <!-- Formulario para filtros y exportar a Excel -->
+        <form method="get" action="{% url 'exportar_excel' %}" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="id_fecha_inicio">Fecha Inicio</label>
+                    <input type="date" name="fecha_inicio" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="id_fecha_fin">Fecha Fin</label>
+                    <input type="date" name="fecha_fin" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="id_empresa">Empresa</label>
+                    <select name="empresa" class="form-control">
+                        <option value="">-- Todas --</option>
+                        {% for empresa in empresas %}
+                        <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_dependencia">Dependencia</label>
+                    <select name="dependencia" class="form-control">
+                        <option value="">-- Todas --</option>
+                        {% for dependencia in dependencias %}
+                        <option value="{{ dependencia.id }}">{{ dependencia.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label for="id_tipo_correspondencia">Tipo de Correspondencia</label>
+                    <select name="tipo_correspondencia" class="form-control">
+                        <option value="">-- Todas --</option>
+                        <option value="Carta">Carta</option>
+                        <option value="Memorando">Memorando</option>
+                        <option value="Email">Email</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mt-4">
+                    <input type="checkbox" name="adjuntos" value="True">
+                    <label for="id_adjuntos">Solo con adjuntos</label>
+                </div>
+                <div class="col-md-6 mt-4">
+                    <button type="submit" class="btn btn-primary">Exportar a Excel</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Lista de correspondencia -->
+        <h2>Lista de Correspondencias</h2>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Consecutivo</th>
+                    <th>Tipo</th>
+                    <th>Dependencia</th>
+                    <th>Entrada/Salida</th>
+                    <th>Fecha</th>
+                    <th>Documento</th>
+                    <th>Asunto</th>
+                    <th>Remitente</th>
+                    <th>Destinatario</th>
+                    <th>Necesita Respuesta</th>
+                    <th>Fecha Límite de Respuesta</th>
+                    <th>Estado de Respuesta</th>
+                    <th>Respuesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for correspondencia in correspondencias %}
+                    <tr class="{% if correspondencia.necesita_respuesta and not correspondencia.respondida %}respuesta-necesaria{% endif %}">
+                        <td>{{ correspondencia.consecutivo }}</td>
+                        <td>{{ correspondencia.tipo_correspondencia }}</td>
+                        <td>{{ correspondencia.dependencia.nombre }}</td>
+                        <td>{{ correspondencia.entrada_salida }}</td>
+                        <td>{{ correspondencia.fecha }}</td>
+                        <td>
+                            {% if correspondencia.documento %}
+                                <a href="{{ correspondencia.documento.url }}" class="btn btn-sm btn-info">Ver Documento</a>
+                            {% else %}
+                                <a href="{% url 'adjuntar_documento' correspondencia.id %}" class="btn btn-sm btn-warning">Adjuntar Documento</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ correspondencia.asunto }}</td>
+                        <td>{{ correspondencia.remitente }}</td>
+                        <td>{{ correspondencia.destinatario }}</td>
+                        <td>{{ correspondencia.necesita_respuesta|yesno:"Sí,No" }}</td>
+                        <td>{{ correspondencia.fecha_limite_respuesta }}</td>
+                        <td>
+                            {% if correspondencia.respondida %}
+                                Respondida el {{ correspondencia.fecha_respuesta }}
+                            {% else %}
+                                <a href="{% url 'responder_correspondencia' correspondencia.id %}" class="btn btn-sm btn-success">Responder</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if correspondencia.respondida %}
+                                <a href="{% url 'ver_respuesta' correspondencia.id %}" class="btn btn-sm btn-secondary">Ver Respuesta</a>
+                            {% else %}
+                                Sin Respuesta
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="12">No hay correspondencia registrada.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-3">
+            <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar Sesión</a>
+            <a href="{% url 'portada' %}" class="btn btn-secondary">Volver a la Portada</a>
+        </div>
+    </div>
+</body>
+</html>

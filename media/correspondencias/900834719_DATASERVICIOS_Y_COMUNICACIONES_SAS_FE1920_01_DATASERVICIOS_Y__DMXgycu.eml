@@ -1,0 +1,798 @@
+Delivered-To: ronald.cardozo@grodco.com.co
+Received: by 2002:a05:7108:77c8:b0:3c6:1d9c:381f with SMTP id y8csp178418gdt;
+        Tue, 15 Oct 2024 07:16:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=2; AJvYcCXvw6Adz2o5k+HjLPFJ6PgeNviPOJthIYClz4RS8Pk0AO9NRcPE9qL7PBoe251qjTHZcG8cCnh5pztYww79fg==@grodco.com.co
+X-Received: by 2002:a05:620a:24c7:b0:7b1:4276:ea4e with SMTP id af79cd13be357-7b14276eb46mr22098085a.13.1729001796926;
+        Tue, 15 Oct 2024 07:16:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1729001796; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ek1q1aqY1q9tcUuESxkkZBzcInEX/oKYXMcYpi8+JrJrRS68gmTUvWAdVXNNk/u1J3
+         PPfgmW3lhB0QQufCF40cxsRkZdmRBetKfoMG/oeSZJbmQqXGI2e/U8+1I7Doyj73bIWw
+         H2NQHp7dWvFV3wbX87jHDTLgeBYlNnYvHRU1Cvt++RucAvXiNggPhUUtBC5MoeHick9O
+         9FVMJOBytaUmNOClE2eevWQgUG8qm6ftXBVAnvIl4IJvPNtlh6wxRkH0CWH46Aiiz2IP
+         iUQt8P6bKO4NP19GD7V3HaSlJJBa6tw9Y/I1FxfaPo6Lgtu4i9l4AjvZRc3rkHI+rG0B
+         KdLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=3XUjZmLsrFqmbccfBGUSwKMzXpTfPs0XHpRVEcci4xU=;
+        fh=/fmYH95M8WELbwL/6SNV53NvT1i+xx7ryT6EUKe/ZNM=;
+        b=RRlhQaVhkC/bZTG6JOKpeo5YJBl/0FHe972Xv6O1Soy+VK3PEL0b4jTwCez/gsvUMn
+         SSd5GjgcGewh51q29yZHgTPMZKbbro1PF+m27o57UtqvL3xZM1L4aM5cNuKfaJW5dmL7
+         nw9i9Oo3cUpAvYCrR+n8Zv6YeA7/sDOM652RJKYzDyaZpD3DtcUrRjzGOOBAAeThW9Ag
+         YYBEf0W/WuLQjqJ7OKO9dbRgNC6Wxeiq5QZvJtrIHY98Vgn6lDnPWYTUoHmUfT8t2Sm1
+         lgCOXIfON+S/Q5M3LwIDhhjKCEwvME13gtjvOC8y0kLN0uRKFFHDlvr82mC4TCWBwO91
+         K/5w==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@grodco-com-co.20230601.gappssmtp.com header.s=20230601 header.b=UpKJxPvR;
+       spf=pass (google.com: domain of ricardo.rodriguez@grodco.com.co designates 209.85.220.41 as permitted sender) smtp.mailfrom=ricardo.rodriguez@grodco.com.co;
+       dara=neutral header.i=@grodco.com.co
+Return-Path: <ricardo.rodriguez@grodco.com.co>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id af79cd13be357-7b1363bd059sor107798285a.20.2024.10.15.07.16.36
+        for <ronald.cardozo@grodco.com.co>
+        (Google Transport Security);
+        Tue, 15 Oct 2024 07:16:36 -0700 (PDT)
+Received-SPF: pass (google.com: domain of ricardo.rodriguez@grodco.com.co designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@grodco-com-co.20230601.gappssmtp.com header.s=20230601 header.b=UpKJxPvR;
+       spf=pass (google.com: domain of ricardo.rodriguez@grodco.com.co designates 209.85.220.41 as permitted sender) smtp.mailfrom=ricardo.rodriguez@grodco.com.co;
+       dara=neutral header.i=@grodco.com.co
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grodco-com-co.20230601.gappssmtp.com; s=20230601; t=1729001796; x=1729606596; darn=grodco.com.co;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3XUjZmLsrFqmbccfBGUSwKMzXpTfPs0XHpRVEcci4xU=;
+        b=UpKJxPvR3ap10fLMzy9fHp59S5wDgR5lUF5oBDJQ4BFKPY4yUXZOqYfU+Rl840IRVW
+         +/4KbTweQl2Ac/itojk1CK03o8hcYQpnNLIt0hKmBKjGAJNrHE/HieJFez4EI/u9l9mQ
+         5bh+AgkxW3xjlYvMRF2XtUbWHaAL64mYjKa4GOyb3T9hEysbrD0j2lhWbIXiEp29S3kE
+         sWPquh+iisBgVA82k72Dorl6KHcnZFi236LKhcgW2L3XqXAFoX6QHwneaUncGVz872Rp
+         GHg6GBT/DKWy+AG8l0S4dhxn1HQHULqBnWdnZw+l9vw3tz0gxl3V4kmpgDQGlNezaBns
+         Q1Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729001796; x=1729606596;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3XUjZmLsrFqmbccfBGUSwKMzXpTfPs0XHpRVEcci4xU=;
+        b=N47mpY92WNM2M47ijEKOvBJxemg3rMiN4A7ROOYw2WJT8YouHhhJvbsiOBFfiAVynd
+         S4hB3EaPC8S/OIdtyl0HdjaPcPUULHXtr60c0BVk5f6yfKyu8dRnvYlK0e8DRhycCX5n
+         8FxD+n4XMuo1A8Ll3VjAz+ouUpkoHIA1C1ag5NkIBNgf6tDjHspYspT2/rbxLq2ff7ez
+         BVcsv3aYYTWzlEXs400SHkvVKZMpOJquhX6LoXvzepea/NXw544ihzE1DCZWyBHdOEe/
+         ZdKq06Szd8m8FDcER+VxPw3D8M59k2b3xMavf1HIghIuuCM+SohTrsvrax/2D70ySlza
+         /spA==
+X-Forwarded-Encrypted: i=1; AJvYcCWiK3iMEglreV5xkNSZr8Pf1Y4WzyGqi0iH8StQvT5Nxe5ksZoaGs2kk2RN1gttWhdFdRwFjPR4smWsPxM0vg==@grodco.com.co
+X-Gm-Message-State: AOJu0YzL7MwNof5cswBkMInplnDto7wi+mGSFOmtcK+DOEzb333caRrk
+	QPpTgEYBiDogOjdnt2mbjsyv7LAq6F/f+FppUYqJG50EKpOhHn4RUbtonb7HiGTkixTp3Ywkwv6
+	VftOWS1DzE7Pvn/UbE9ksJG/MbKmYfg46YDB7/DJ3
+X-Google-Smtp-Source: AGHT+IGAp89eSs8wO2s1xe2CciGdbPEjm0Valf4wcb2gRRIC3zfeKCfvpSi0OcmDB7Iv6bAdlbtJbQX/ZJEKReWk31w=
+X-Received: by 2002:ac8:5806:0:b0:45d:6daa:ed19 with SMTP id
+ d75a77b69052e-4604bbccc15mr235189581cf.30.1729001796249; Tue, 15 Oct 2024
+ 07:16:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <0100019268a68b79-f832b0e7-c37e-4555-9c68-9c21f32c8343-000000@email.amazonses.com>
+ <CALkYD9=q-GU_Sv09CR6J9KsXU3JA+pPY-r=e1N+ifJzuc5kM+A@mail.gmail.com> <CAA06gAN9ZFtU0z_2OQW0rJsjfDBL6ykWfWpETr3A9wzh5-VAKQ@mail.gmail.com>
+In-Reply-To: <CAA06gAN9ZFtU0z_2OQW0rJsjfDBL6ykWfWpETr3A9wzh5-VAKQ@mail.gmail.com>
+From: =?UTF-8?Q?Ricardo_Mauricio_Rodriguez_Pe=C3=B1a?= <ricardo.rodriguez@grodco.com.co>
+Date: Tue, 15 Oct 2024 09:16:24 -0500
+Message-ID: <CAGvNErZzCu0-2T9arPXcgHt8y8jVZWGGVSd2-MSZSPOUz-qk3w@mail.gmail.com>
+Subject: Re: 900834719;DATASERVICIOS Y COMUNICACIONES SAS;FE1920;01;DATASERVICIOS
+ Y COMUNICACIONES SAS;
+To: Juliana Andrea Giraldo Osorio <juliana.giraldo@grodco.com.co>, 
+	Ronald Cardozo <ronald.cardozo@grodco.com.co>, 
+	=?UTF-8?Q?N=C3=A9stor_Fabian_Ram=C3=ADrez_Roncancio?= <nestor.ramirez@grodco.com.co>
+Cc: =?UTF-8?Q?Facturaci=C3=B3n_Electronica_Tecnica_Vial?= <facelectecnica@grodco.com.co>, 
+	Luz Mila Fernandez Orjuela <luzmila.fernandez@grodco.com.co>
+Content-Type: multipart/alternative; boundary="000000000000e1c4ae06248499bf"
+
+--000000000000e1c4ae06248499bf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Buenos d=C3=ADas,
+
+Esta factura corresponde al Depto de Sistema, a quien copio.
+
+Saludos Cordiales,
+
+
+*Ricardo Mauricio Rodriguez Pe=C3=B1a*
+*Analista de Log=C3=ADstica e Inventarios*
+Cel. 317 514 0740
+Tel. +571 635 62 62
+ricardo.rodriguez@grodco.com.co <ricardo.rodriguez@grodco.com.co>
+www.grodco.com.co
+Calle 100 # 13-21 Piso 8 Bogota - Colombia
+
+       *Encu=C3=A9ntranos en: *
+
+*Aviso de Confidencialidad*
+Este correo electr=C3=B3nico, incluyendo en su caso, los archivos adjuntos =
+al
+mismo, pueden contener informaci=C3=B3n de car=C3=A1cter confidencial y/o
+privilegiada, y se env=C3=ADan a la atenci=C3=B3n =C3=BAnica y exclusivamen=
+te de la
+persona y/o entidad a quien va dirigido. La copia, revisi=C3=B3n, uso,
+revelaci=C3=B3n y/o distribuci=C3=B3n de dicha informaci=C3=B3n confidencia=
+l sin la
+autorizaci=C3=B3n por escrito de C.I GRODCO Ingenieros Civiles S.A.S est=C3=
+=A1
+prohibida. Si usted no es el destinatario a quien se dirige el presente
+correo, favor de contactar al remitente respondiendo al presente correo y
+eliminar el correo original incluyendo sus archivos, as=C3=AD como cualesqu=
+iera
+copia del mismo. Mediante la recepci=C3=B3n del presente correo usted recon=
+oce y
+acepta que en caso de incumplimiento de su parte y/o de sus representantes
+a los t=C3=A9rminos antes mencionados, C.I GRODCO Ingenieros Civiles
+S.A.S tendr=C3=A1 derecho a los da=C3=B1os y perjuicios que esto le cause.
+Para mayor informaci=C3=B3n puede ingresar a:
+http://www.grodco.com.co/content/tratamiento-de-datos-personales
+
+*Confidenciality Notice**:*
+This e-mail message including attachments, if any, is intended only for the
+person or entity to which it is addressed and may contain confidential and
+/or privileged material. Any review, use, disclosure or distribution of
+such confidential information without the written authorization of C.I
+GRODCO Ingenieros Civiles S.A.Sis prohibited. If you are not the intended
+recipient, please contact the sender by reply e-mail and destroy all copies
+of the original message. By receiving this e-mail you acknowledge that any
+breach y you and/or your representatives of the above provisions may
+entitle C.I GRODCO Ingenieros Civiles S.A.S to seek for damages.
+For more information you can access
+http://www.grodco.com.co/content/tratamiento-de-datos-personales
+
+
+El mar, 15 oct 2024 a las 8:42, Juliana Andrea Giraldo Osorio (<
+juliana.giraldo@grodco.com.co>) escribi=C3=B3:
+
+> Buenos dias
+>
+> Esta factura a que corresponde
+>
+> Gracias
+>
+> El lun, 7 oct 2024 a las 16:26, Facturaci=C3=B3n Electronica Tecnica Vial=
+ (<
+> facelectecnica@grodco.com.co>) escribi=C3=B3:
+>
+>>
+>> Buen Dia envio Factura Pertinente
+>>
+>> ---------- Forwarded message ---------
+>> De: Dataservicios Y Comunicaciones Sas <no-responder@worldoffice.com.co>
+>> Date: lun, 7 oct 2024 a las 15:23
+>> Subject: 900834719;DATASERVICIOS Y COMUNICACIONES
+>> SAS;FE1920;01;DATASERVICIOS Y COMUNICACIONES SAS;
+>> To: <facelectecnica@grodco.com.co>
+>>
+>>
+>>
+>> [image: World Office]
+>>
+>> [image: World Office]
+>>
+>>
+>> Tecnica Vial SAS,
+>> Has recibido un documento electr=C3=B3nico generado y enviado a trav=C3=
+=A9s del
+>> sistema de Facturaci=C3=B3n Electr=C3=B3nica del Software World Office c=
+on la
+>> siguiente informaci=C3=B3n:
+>>
+>> *DATOS DEL EMISOR*
+>> *Empresa:*
+>> DATASERVICIOS Y COMUNICACIONES SAS
+>> *Identificaci=C3=B3n:*
+>> 900834719
+>>
+>> *INFORMACI=C3=93N DEL DOCUMENTO*
+>> *Fecha:*
+>> 07-10-2024
+>> *Tipo:*
+>> Factura
+>> *N=C3=BAmero:*
+>> FE 1920
+>> *Moneda:*
+>> COP
+>> *Valor Total:*
+>> 2.294.594,79
+>>
+>> Adjunto encontrar=C3=A1s la representaci=C3=B3n gr=C3=A1fica del documen=
+to en formato
+>> *PDF* y el documento electr=C3=B3nico en formato *XML*.
+>>
+>> Facturaci=C3=B3n Electr=C3=B3nica
+>> World Office Colombia SAS.
+>> www.worldoffice.com.co
+>> <https://xkk2x50x.r.us-east-1.awstrack.me/L0/https:%2F%2Fwww.worldoffice=
+.com.co%2F/1/0100019268a68b79-f832b0e7-c37e-4555-9c68-9c21f32c8343-000000/i=
+IhOzpkogZRgtLlRsFpHTBRwQww=3D394>
+>>
+>> Nota: No respondas a este mensaje, ya que ha sido enviado autom=C3=A1tic=
+amente
+>> desde una direcci=C3=B3n que no acepta respuestas.
+>>
+>>
+>>
+>
+>
+> --
+> Saludos Cordiales,
+>
+>
+> *Juliana Andrea Giraldo Osorio *
+> *Auxiliar Administrativa de Obra *
+> *Unidad Industrial Chinchina *
+>
+> Tel. +576 850 72 47
+> juliana.giraldo@grodco.com.co
+> www.grodco.com.co
+> Calle 10 # 7-63 Of. 302 Chinchina - Colombia
+>
+>         *Encu=C3=A9ntranos en: *
+>
+> *Aviso de Confidencialidad*
+> Este correo electr=C3=B3nico, incluyendo en su caso, los archivos adjunto=
+s al
+> mismo, pueden contener informaci=C3=B3n de car=C3=A1cter confidencial y/o
+> privilegiada, y se env=C3=ADan a la atenci=C3=B3n =C3=BAnica y exclusivam=
+ente de la
+> persona y/o entidad a quien va dirigido. La copia, revisi=C3=B3n, uso,
+> revelaci=C3=B3n y/o distribuci=C3=B3n de dicha informaci=C3=B3n confidenc=
+ial sin la
+> autorizaci=C3=B3n por escrito de C.I GRODCO Ingenieros Civiles S.A.S est=
+=C3=A1
+> prohibida. Si usted no es el destinatario a quien se dirige el presente
+> correo, favor de contactar al remitente respondiendo al presente correo y
+> eliminar el correo original incluyendo sus archivos, as=C3=AD como cuales=
+quiera
+> copia del mismo. Mediante la recepci=C3=B3n del presente correo usted rec=
+onoce y
+> acepta que en caso de incumplimiento de su parte y/o de sus representante=
+s
+> a los t=C3=A9rminos antes mencionados, C.I GRODCO Ingenieros Civiles S.A.=
+S tendr=C3=A1
+> derecho a los da=C3=B1os y perjuicios que esto le cause.
+> Para mayor informaci=C3=B3n puede ingresar a: *http://www.grodco.com.co/c=
+ontent/tratamiento-de-datos-personales
+> <http://www.grodco.com.co/content/tratamiento-de-datos-personales>*
+>
+> *Confidenciality Notice**:*
+> This e-mail message including attachments, if any, is intended only for
+> the person or entity to which it is addressed and may contain confidentia=
+l
+> and /or privileged material. Any review, use, disclosure or distribution =
+of
+> such confidential information without the written authorization of C.I
+> GRODCO Ingenieros Civiles S.A.Sis prohibited. If you are not the intended
+> recipient, please contact the sender by reply e-mail and destroy all copi=
+es
+> of the original message. By receiving this e-mail you acknowledge that an=
+y
+> breach y you and/or your representatives of the above provisions may
+> entitle C.I GRODCO Ingenieros Civiles S.A.S to seek for damages.
+> For more information you can access *http://www.grodco.com.co/content/tra=
+tamiento-de-datos-personales
+> <http://www.grodco.com.co/content/tratamiento-de-datos-personales>*
+>
+
+--000000000000e1c4ae06248499bf
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Buenos d=C3=ADas,</div><div dir=3D"ltr"><=
+br></div><div dir=3D"ltr">Esta factura corresponde al Depto de Sistema, a q=
+uien copio.</div><div dir=3D"ltr"><br clear=3D"all"><div><div dir=3D"ltr" c=
+lass=3D"gmail_signature"><div dir=3D"ltr"><span style=3D"color:rgb(34,34,34=
+);font-size:10.6667px">Saludos Cordiales,</span><br style=3D"color:rgb(34,3=
+4,34)"><br style=3D"color:rgb(34,34,34)"><br style=3D"color:rgb(34,34,34)">=
+<span style=3D"color:rgb(34,34,34);font-size:9pt"><span style=3D"color:rgb(=
+51,85,153)"><span style=3D"font-family:arial,helvetica,sans-serif"><b>Ricar=
+do Mauricio Rodriguez Pe=C3=B1a</b></span></span></span><br style=3D"color:=
+rgb(34,34,34)"><span style=3D"color:rgb(34,34,34);font-size:9pt"><em><span =
+style=3D"color:rgb(87,112,124);font-family:arial,helvetica,sans-serif">Anal=
+ista de Log=C3=ADstica e Inventarios</span></em></span><br style=3D"color:r=
+gb(34,34,34)"><span style=3D"color:rgb(87,112,124);font-family:arial,helvet=
+ica,sans-serif;font-size:10.6667px">Cel. 317 514 0740</span><div><span styl=
+e=3D"color:rgb(87,112,124);font-family:arial,helvetica,sans-serif;font-size=
+:10.6667px">Tel.=C2=A0</span><span style=3D"color:rgb(34,34,34);font-size:8=
+pt"><span style=3D"color:rgb(0,55,106)"><span style=3D"font-family:arial,he=
+lvetica,sans-serif"><em><b></b></em></span></span><span style=3D"font-famil=
+y:arial,helvetica,sans-serif"><span style=3D"color:rgb(87,112,124)">+571 63=
+5 62 62=C2=A0</span></span><span style=3D"color:rgb(87,112,124);font-family=
+:arial,helvetica,sans-serif">=C2=A0</span></span><br style=3D"color:rgb(34,=
+34,34)"><span style=3D"color:rgb(34,34,34);font-size:8pt"><font face=3D"ari=
+al, helvetica, sans-serif">ricardo<a href=3D"mailto:ricardo.rodriguez@grodc=
+o.com.co" target=3D"_blank">.rodriguez@grodco.com.co</a></font><br><span st=
+yle=3D"color:rgb(87,112,124);font-family:arial,helvetica,sans-serif"><a hre=
+f=3D"http://www.grodco.com.co/" style=3D"color:rgb(17,85,204)" target=3D"_b=
+lank">www.grodco.com.co</a></span><br><span style=3D"font-family:arial,helv=
+etica,sans-serif"><em><b></b></em><span style=3D"color:rgb(87,112,124)">Cal=
+le 100 # 13-21 Piso 8 Bogota - Colombia</span></span></span><br style=3D"co=
+lor:rgb(34,34,34)"><br style=3D"color:rgb(34,34,34)"><img src=3D"https://ci=
+3.googleusercontent.com/mail-sig/AIorK4zXBkvoC831SsdQaeWn8rpQs7eQ_N_AmLC1eL=
+HIKCpdPI6ZFoeAtqr_lC8n7LvKnXl7bVwo5U8" style=3D"color: rgb(34, 34, 34);"><s=
+pan style=3D"color:rgb(34,34,34)">=C2=A0 =C2=A0 =C2=A0 =C2=A0</span><em sty=
+le=3D"color:rgb(0,55,106);font-size:13.3333px"><b><span style=3D"font-famil=
+y:arial,helvetica,sans-serif">Encu=C3=A9ntranos en:=C2=A0</span></b></em><i=
+mg alt=3D"" src=3D"https://storage.googleapis.com/aesis/zumpul/icons/3.png"=
+ style=3D"color: rgb(34, 34, 34); height: 24px; width: 23px;"><img alt=3D""=
+ src=3D"https://storage.googleapis.com/aesis/zumpul/icons/5.png" style=3D"c=
+olor: rgb(34, 34, 34); height: 24px; width: 23px;"><img alt=3D"" src=3D"htt=
+ps://storage.googleapis.com/aesis/zumpul/icons/6.png" style=3D"color: rgb(3=
+4, 34, 34); height: 24px; width: 23px;"><img alt=3D"" src=3D"https://storag=
+e.googleapis.com/aesis/zumpul/icons/4.png" style=3D"color: rgb(34, 34, 34);=
+ height: 24px; width: 23px;"><br style=3D"color:rgb(34,34,34)"><br style=3D=
+"color:rgb(34,34,34)"><span style=3D"color:rgb(0,51,102);font-family:arial,=
+sans-serif;font-size:12.8px"><b><em>Aviso de Confidencialidad</em></b></spa=
+n><br style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:1=
+2.8px"><span style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font=
+-size:12.8px"><font color=3D"#57707c" face=3D"arial, helvetica, sans-serif"=
+><span style=3D"font-size:10.6667px">Este correo electr=C3=B3nico, incluyen=
+do en su caso, los archivos adjuntos al mismo, pueden contener informaci=C3=
+=B3n de car=C3=A1cter confidencial y/o privilegiada, y se env=C3=ADan=C2=A0=
+a la atenci=C3=B3n =C3=BAnica y exclusivamente de la persona y/o entidad a =
+quien va dirigido. La copia, revisi=C3=B3n, uso, revelaci=C3=B3n y/o distri=
+buci=C3=B3n de dicha informaci=C3=B3n confidencial=C2=A0sin la autorizaci=
+=C3=B3n por escrito de=C2=A0C.I GRODCO Ingenieros Civiles S.A.S=C2=A0est=C3=
+=A1 prohibida. Si usted no es el destinatario a quien se dirige el presente=
+ correo, favor de=C2=A0contactar al remitente respondiendo al presente corr=
+eo y eliminar el correo original incluyendo sus archivos,=C2=A0as=C3=AD com=
+o cualesquiera copia del mismo. Mediante la recepci=C3=B3n del presente cor=
+reo usted reconoce y acepta que en caso de incumplimiento de su parte y/o d=
+e sus representantes a los t=C3=A9rminos antes mencionados,=C2=A0C.I GRODCO=
+ Ingenieros Civiles S.A.S=C2=A0tendr=C3=A1 derecho a los da=C3=B1os y perju=
+icios que esto le cause.</span></font><br><font color=3D"#57707c" face=3D"a=
+rial, helvetica, sans-serif"><span style=3D"font-size:8pt">Para mayor infor=
+maci=C3=B3n puede ingresar a:</span></font><span style=3D"color:rgb(0,51,10=
+2);font-size:8pt;font-weight:700">=C2=A0</span><span style=3D"color:rgb(0,5=
+1,102);font-size:x-small;font-weight:700"><a href=3D"http://www.grodco.com.=
+co/content/tratamiento-de-datos-personales" style=3D"color:rgb(17,85,204)" =
+target=3D"_blank">http://www.grodco.com.co/content/tratamiento-de-datos-per=
+sonales</a></span></span><br style=3D"color:rgb(34,34,34);font-family:arial=
+,sans-serif;font-size:12.8px"><br style=3D"color:rgb(34,34,34);font-family:=
+arial,sans-serif;font-size:12.8px"><b style=3D"color:rgb(0,51,102);font-fam=
+ily:arial,sans-serif;font-size:12.8px"><em>Confidenciality Notice</em></b><=
+span style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:8p=
+t"><span style=3D"font-family:arial,helvetica,sans-serif"><b><span style=3D=
+"color:rgb(0,51,102)">:</span></b></span></span><br style=3D"font-size:12.8=
+px;color:rgb(38,50,56);font-family:Roboto,Arial,sans-serif"><span style=3D"=
+color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><font co=
+lor=3D"#57707c" face=3D"arial, helvetica, sans-serif"><span style=3D"font-s=
+ize:10.6667px">This e-mail message including attachments, if any, is intend=
+ed only for the person or entity to which it is addressed and may contain c=
+onfidential and /or privileged material. Any review, use, disclosure or dis=
+tribution of such confidential information without the written authorizatio=
+n of=C2=A0C.I GRODCO Ingenieros Civiles S.A.Sis prohibited. If you are=C2=
+=A0not the intended recipient, please contact the sender by reply e-mail an=
+d destroy all copies of the original message. By receiving this e-mail you =
+acknowledge that any breach=C2=A0y you and/or your representatives of the a=
+bove provisions may entitle=C2=A0C.I GRODCO Ingenieros Civiles S.A.S=C2=A0t=
+o seek for damages.</span></font><br><font color=3D"#57707c" face=3D"arial,=
+ helvetica, sans-serif"><span style=3D"font-size:10.6667px">For more inform=
+ation you can access=C2=A0</span></font></span><span style=3D"color:rgb(0,5=
+1,102);font-family:arial,sans-serif;font-size:x-small;font-weight:700"><a h=
+ref=3D"http://www.grodco.com.co/content/tratamiento-de-datos-personales" st=
+yle=3D"color:rgb(17,85,204)" target=3D"_blank">http://www.grodco.com.co/con=
+tent/tratamiento-de-datos-personales</a></span><br></div></div></div></div>=
+<br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
+tr">El mar, 15 oct 2024 a las 8:42, Juliana Andrea Giraldo Osorio (&lt;<a h=
+ref=3D"mailto:juliana.giraldo@grodco.com.co">juliana.giraldo@grodco.com.co<=
+/a>&gt;) escribi=C3=B3:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex"><div dir=3D"ltr"><div>Buenos dias</div><div><br></div><div>Esta fac=
+tura a que corresponde</div><div><br></div><div>Gracias<br></div></div><br>=
+<div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">El lun, 7 =
+oct 2024 a las 16:26, Facturaci=C3=B3n Electronica Tecnica Vial (&lt;<a hre=
+f=3D"mailto:facelectecnica@grodco.com.co" target=3D"_blank">facelectecnica@=
+grodco.com.co</a>&gt;) escribi=C3=B3:<br></div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
+04);padding-left:1ex"><div dir=3D"ltr"><br>Buen Dia envio Factura Pertinent=
+e<br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">-=
+--------- Forwarded message ---------<br>De: <strong class=3D"gmail_sendern=
+ame" dir=3D"auto">Dataservicios Y Comunicaciones Sas</strong> <span dir=3D"=
+auto">&lt;<a href=3D"mailto:no-responder@worldoffice.com.co" target=3D"_bla=
+nk">no-responder@worldoffice.com.co</a>&gt;</span><br>Date: lun, 7 oct 2024=
+ a las 15:23<br>Subject: 900834719;DATASERVICIOS Y COMUNICACIONES SAS;FE192=
+0;01;DATASERVICIOS Y COMUNICACIONES SAS;<br>To:  &lt;<a href=3D"mailto:face=
+lectecnica@grodco.com.co" target=3D"_blank">facelectecnica@grodco.com.co</a=
+>&gt;<br></div><br><br><div><u></u>
+
+
+   =20
+   =20
+   =20
+   =20
+
+<div width=3D"100%" style=3D"margin:0px;padding:0px;overflow-x:hidden;backg=
+round:rgb(237,239,241);font-family:&quot;Arial Narrow&quot;,Verdana,sans-se=
+rif;font-size:17px;color:rgb(138,150,164)">
+    <div style=3D"width:640px;margin:0px auto;background:rgb(255,255,255)">
+        <table width=3D"640" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" vspace=3D"0" hspace=3D"0">
+            <tbody><tr>
+                <td rowspan=3D"2" bgcolor=3D"#EDEFF1">=C2=A0</td>
+                <td bgcolor=3D"#EDEFF1">=C2=A0</td>
+                <td rowspan=3D"2" bgcolor=3D"#EDEFF1">=C2=A0</td>
+            </tr>
+            <tr>
+                <td valign=3D"middle" bgcolor=3D"#EDEFF1">
+                    <table width=3D"100%" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0" vspace=3D"0" hspace=3D"0">
+                        <tbody><tr>
+                            <td align=3D"left" bgcolor=3D"#EDEFF1">
+                                <table width=3D"288" border=3D"0" cellspaci=
+ng=3D"0" cellpadding=3D"0" vspace=3D"0" hspace=3D"0" style=3D"display:inlin=
+e-block;vertical-align:middle">
+                                    <tbody><tr>
+                                        <td>
+                                            <table width=3D"288" border=3D"=
+0" cellspacing=3D"0" cellpadding=3D"0" vspace=3D"0" hspace=3D"0">
+                                                <tbody><tr>
+                                                    <td align=3D"left" bgco=
+lor=3D"#EDEFF1">
+                                                        <img src=3D"https:/=
+/www.worldofficeonline.com/Images/Plantillas/Facturacion/logo.png" alt=3D"W=
+orld Office" style=3D"line-height: 0;" border=3D"0" hspace=3D"0" vspace=3D"=
+0">
+                                                    </td>
+                                                </tr>
+                                                <tr><td align=3D"left" bgco=
+lor=3D"#EDEFF1">=C2=A0</td></tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                                <table width=3D"288" border=3D"0" cellspaci=
+ng=3D"0" cellpadding=3D"0" vspace=3D"0" hspace=3D"0" style=3D"display:inlin=
+e-block;vertical-align:middle">
+                                   =20
+                                    <tbody><tr>
+                                        <td>
+                                            <table width=3D"288" border=3D"=
+0" cellspacing=3D"0" cellpadding=3D"0" vspace=3D"0" hspace=3D"0">
+                                                <tbody><tr>
+                                                    <td align=3D"right" bgc=
+olor=3D"#EDEFF1">
+                                                        <img alt=3D"World O=
+ffice" width=3D"250" height=3D"53" border=3D"0" style=3D"display: none;">
+                                                    </td>
+                                                </tr>
+                                                <tr><td align=3D"left" bgco=
+lor=3D"#EDEFF1">=C2=A0</td></tr>
+                                            </tbody></table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan=3D"17" bgcolor=3D"#FFFFFF">=C2=A0</td>
+                <td height=3D"30" bgcolor=3D"#FFFFFF">=C2=A0</td>
+                <td rowspan=3D"17" bgcolor=3D"#FFFFFF">=C2=A0</td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF" style=3D"font-family:&quot;Arial Na=
+rrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,164)">Tecnic=
+a Vial SAS,</td>
+            </tr>
+            <tr><td bgcolor=3D"#FFFFFF" height=3D"10" style=3D"line-height:=
+10px"></td></tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF" style=3D"font-family:&quot;Arial Na=
+rrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,164)">Has re=
+cibido un documento electr=C3=B3nico generado y enviado a trav=C3=A9s del s=
+istema de Facturaci=C3=B3n Electr=C3=B3nica del Software World Office con l=
+a siguiente informaci=C3=B3n:</td>
+            </tr>
+            <tr><td height=3D"40" bgcolor=3D"#FFFFFF">=C2=A0</td></tr>
+            <tr>
+                <td height=3D"30" bgcolor=3D"#557DAA" style=3D"font-family:=
+&quot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(255,25=
+5,255);padding:0px 10px"><b>DATOS DEL EMISOR</b></td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Empresa:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">DATASERVICIOS Y COMUNICACIONES SAS=
+</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Identificaci=C3=B3n:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">900834719	 </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr><td height=3D"40" bgcolor=3D"#FFFFFF">=C2=A0</td></tr>
+            <tr>
+                <td height=3D"30" bgcolor=3D"#557DAA" style=3D"font-family:=
+&quot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(255,25=
+5,255);padding:0px 10px"><b>INFORMACI=C3=93N DEL DOCUMENTO</b></td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Fecha:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">07-10-2024</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Tipo:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">Factura</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>N=C3=BAmero:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">FE 1920</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Moneda:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">COP</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF">
+                    <table width=3D"115" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px"><b>Valor Total:</b></td>
+                        </tr>
+                    </tbody></table>
+                    <table width=3D"460" border=3D"0" align=3D"left" cellpa=
+dding=3D"0" cellspacing=3D"0">
+                        <tbody><tr>
+                            <td bgcolor=3D"#FFFFFF" style=3D"font-family:&q=
+uot;Arial Narrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,=
+164);padding-top:7px;padding-bottom:7px">2.294.594,79</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+            <tr><td height=3D"40" bgcolor=3D"#FFFFFF">=C2=A0</td></tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF" style=3D"font-family:&quot;Arial Na=
+rrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,164)">Adjunt=
+o encontrar=C3=A1s la representaci=C3=B3n gr=C3=A1fica del documento en for=
+mato <b style=3D"color:rgb(45,135,209)">PDF</b> y el documento electr=C3=B3=
+nico en formato <b style=3D"color:rgb(45,135,209)">XML</b>.</td>
+            </tr>
+            <tr>
+                <td width=3D"30" rowspan=3D"5" bgcolor=3D"#FFFFFF">=C2=A0</=
+td>
+                <td height=3D"60" bgcolor=3D"#FFFFFF">=C2=A0</td>
+                <td width=3D"30" rowspan=3D"5" bgcolor=3D"#FFFFFF">=C2=A0</=
+td>
+            </tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF" style=3D"font-family:&quot;Arial Na=
+rrow&quot;,Verdana,sans-serif;font-size:17px;color:rgb(138,150,164);line-he=
+ight:19px">
+                    Facturaci=C3=B3n Electr=C3=B3nica<br>
+                    World Office Colombia SAS.<br>
+                    <a href=3D"https://xkk2x50x.r.us-east-1.awstrack.me/L0/=
+https:%2F%2Fwww.worldoffice.com.co%2F/1/0100019268a68b79-f832b0e7-c37e-4555=
+-9c68-9c21f32c8343-000000/iIhOzpkogZRgtLlRsFpHTBRwQww=3D394" style=3D"text-=
+decoration:none;color:rgb(45,135,209)" target=3D"_blank">www.worldoffice.co=
+m.co</a>
+                </td>
+            </tr>
+            <tr><td bgcolor=3D"#FFFFFF">=C2=A0</td></tr>
+            <tr>
+                <td bgcolor=3D"#FFFFFF" style=3D"font-family:&quot;Arial Na=
+rrow&quot;,Verdana,sans-serif;font-size:14px;color:rgb(138,150,164)">Nota: =
+No respondas a este mensaje, ya que ha sido enviado autom=C3=A1ticamente de=
+sde una direcci=C3=B3n que no acepta respuestas.</td>
+            </tr>
+            <tr><td bgcolor=3D"#FFFFFF">=C2=A0</td></tr>
+            <tr><td colspan=3D"3" bgcolor=3D"#EDEFF1">=C2=A0</td></tr>
+        </tbody></table>
+    </div>
+<img alt=3D"" src=3D"https://xkk2x50x.r.us-east-1.awstrack.me/I0/0100019268=
+a68b79-f832b0e7-c37e-4555-9c68-9c21f32c8343-000000/OfUETKUQvOFfNPt4DEAMHnqN=
+1Oo=3D394" style=3D"display: none; width: 1px; height: 1px;">
+</div>
+</div></div></div>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div style=3D=
+"display:table;width:100%"><span style=3D"font-size:8pt">Saludos Cordiales,=
+</span><br>
+<br>
+<br>
+<span style=3D"font-size:9pt"><span style=3D"color:rgb(51,85,153)"><span st=
+yle=3D"font-family:arial,helvetica,sans-serif"><b>Juliana Andrea Giraldo Os=
+orio </b></span></span></span><br>
+<span style=3D"font-size:9pt"><em><span style=3D"color:rgb(87,112,124);font=
+-family:arial,helvetica,sans-serif">Auxiliar Administrativa de Obra </span>=
+</em></span><br>
+<span style=3D"font-size:8pt"><span style=3D"font-family:arial,helvetica,sa=
+ns-serif"><b style=3D"font-size:13.3333px"><em><span style=3D"color:rgb(0,5=
+5,106)"></span></em></b><b><span style=3D"color:rgb(87,112,124)">Unidad Ind=
+ustrial Chinchina </span></b></span></span><br>
+<br>
+<span style=3D"font-family:arial,helvetica,sans-serif"><font color=3D"#5770=
+7c"><span style=3D"font-size:10.6667px">Tel.=C2=A0</span></font><b style=3D=
+"color:rgb(0,55,106);font-size:8pt;font-style:italic"></b></span><span styl=
+e=3D"font-family:arial,helvetica,sans-serif;font-size:8pt"><span style=3D"c=
+olor:rgb(87,112,124)">+576 850 72 47 </span></span><span style=3D"color:rgb=
+(87,112,124);font-family:arial,helvetica,sans-serif;font-size:8pt">=C2=A0</=
+span><br>
+<span style=3D"font-size:8pt"><span style=3D"color:rgb(0,55,106);font-famil=
+y:arial,helvetica,sans-serif"><em><b></b></em></span><span style=3D"color:r=
+gb(87,112,124);font-family:arial,helvetica,sans-serif"><a href=3D"mailto:ju=
+liana.giraldo@grodco.com.co" target=3D"_blank">juliana.giraldo@grodco.com.c=
+o</a> </span><br>
+<span style=3D"color:rgb(87,112,124);font-family:arial,helvetica,sans-serif=
+"><a href=3D"http://www.grodco.com.co" target=3D"_blank">www.grodco.com.co<=
+/a></span><br>
+<span style=3D"font-family:arial,helvetica,sans-serif"><em><b></b></em><spa=
+n style=3D"color:rgb(87,112,124)">Calle 10 # 7-63 Of. 302 Chinchina - Colom=
+bia </span></span></span><br>
+<br>
+=C2=A0<img src=3D"https://storage.googleapis.com/ae-zumpul-app/152002731578=
+6" style=3D"width: 137.156px;">=C2=A0 =C2=A0 =C2=A0 =C2=A0<em style=3D"colo=
+r:rgb(0,55,106);font-size:13.3333px"><b><span style=3D"font-family:arial,he=
+lvetica,sans-serif">Encu=C3=A9ntranos en:=C2=A0</span></b></em><img alt=3D"=
+" src=3D"https://storage.googleapis.com/aesis/zumpul/icons/3.png" style=3D"=
+height: 24px; width: 23px;"><img alt=3D"" src=3D"https://storage.googleapis=
+.com/aesis/zumpul/icons/5.png" style=3D"height: 24px; width: 23px;"><img al=
+t=3D"" src=3D"https://storage.googleapis.com/aesis/zumpul/icons/6.png" styl=
+e=3D"height: 24px; width: 23px;"><img alt=3D"" src=3D"https://storage.googl=
+eapis.com/aesis/zumpul/icons/4.png" style=3D"height: 24px; width: 23px;"><b=
+r>
+<br>
+<span style=3D"color:rgb(0,51,102);font-family:arial,sans-serif;font-size:1=
+2.8px"><b><em>Aviso de Confidencialidad</em></b></span><br style=3D"color:r=
+gb(34,34,34);font-family:arial,sans-serif;font-size:12.8px">
+<span style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:1=
+2.8px"><font color=3D"#57707c" face=3D"arial, helvetica, sans-serif"><span =
+style=3D"font-size:10.6667px">Este correo electr=C3=B3nico, incluyendo en s=
+u caso, los archivos adjuntos al mismo, pueden contener informaci=C3=B3n de=
+ car=C3=A1cter confidencial y/o privilegiada, y se env=C3=ADan a la atenci=
+=C3=B3n =C3=BAnica y exclusivamente de la persona y/o entidad a quien va di=
+rigido. La copia, revisi=C3=B3n, uso, revelaci=C3=B3n y/o distribuci=C3=B3n=
+ de dicha informaci=C3=B3n confidencial sin la autorizaci=C3=B3n por escrit=
+o de=C2=A0<span style=3D"font-size:10.6667px">C.I GRODCO Ingenieros Civiles=
+ S.A.S</span>=C2=A0est=C3=A1 prohibida. Si usted no es el destinatario a qu=
+ien se dirige el presente correo, favor de=C2=A0contactar al remitente resp=
+ondiendo al presente correo y eliminar el correo original incluyendo sus ar=
+chivos,=C2=A0as=C3=AD como cualesquiera copia del mismo. Mediante la recepc=
+i=C3=B3n del presente correo usted reconoce y acepta que en caso de incumpl=
+imiento de su parte y/o de sus representantes a los t=C3=A9rminos antes men=
+cionados,=C2=A0<span style=3D"font-size:10.6667px">C.I GRODCO Ingenieros Ci=
+viles S.A.S</span>=C2=A0tendr=C3=A1 derecho a los da=C3=B1os y perjuicios q=
+ue esto le cause.</span></font><br>
+<font color=3D"#57707c" face=3D"arial, helvetica, sans-serif"><span style=
+=3D"font-size:8pt">Para mayor informaci=C3=B3n puede ingresar a:</span></fo=
+nt><b style=3D"color:rgb(0,51,102);font-size:8pt;font-weight:700">=C2=A0</b=
+><b style=3D"color:rgb(0,51,102);font-size:x-small;font-weight:700"><a href=
+=3D"http://www.grodco.com.co/content/tratamiento-de-datos-personales" style=
+=3D"color:rgb(17,85,204)" target=3D"_blank">http://www.grodco.com.co/conten=
+t/tratamiento-de-datos-personales</a></b></span><br style=3D"color:rgb(34,3=
+4,34);font-family:arial,sans-serif;font-size:12.8px">
+<br style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.=
+8px">
+<b style=3D"color:rgb(0,51,102);font-family:arial,sans-serif;font-size:12.8=
+px"><em>Confidenciality Notice</em></b><span style=3D"color:rgb(34,34,34);f=
+ont-family:arial,sans-serif;font-size:8pt"><span style=3D"font-family:arial=
+,helvetica,sans-serif"><b><span style=3D"color:rgb(0,51,102)">:</span></b><=
+/span></span><br style=3D"font-size:12.8px;color:rgb(38,50,56);font-family:=
+Roboto,Arial,sans-serif">
+<span style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:1=
+2.8px"><font color=3D"#57707c" face=3D"arial, helvetica, sans-serif"><span =
+style=3D"font-size:10.6667px">This e-mail message including attachments, if=
+ any, is intended only for the person or entity to which it is addressed an=
+d may contain confidential and /or privileged material. Any review, use, di=
+sclosure or distribution of such confidential information without the writt=
+en authorization of=C2=A0<span style=3D"font-size:10.6667px">C.I GRODCO Ing=
+enieros Civiles S.A.S</span>is prohibited. If you are=C2=A0not the intended=
+ recipient, please contact the sender by reply e-mail and destroy all copie=
+s of the original message. By receiving this e-mail you acknowledge that an=
+y breach y you and/or your representatives of the above provisions may enti=
+tle=C2=A0<span style=3D"font-size:10.6667px">C.I GRODCO Ingenieros Civiles =
+S.A.S</span>=C2=A0to seek for damages.</span></font><br>
+<font color=3D"#57707c" face=3D"arial, helvetica, sans-serif"><span style=
+=3D"font-size:10.6667px">For more information you can access=C2=A0</span></=
+font></span><b style=3D"color:rgb(0,51,102);font-family:arial,sans-serif;fo=
+nt-size:x-small;font-weight:700"><a href=3D"http://www.grodco.com.co/conten=
+t/tratamiento-de-datos-personales" style=3D"color:rgb(17,85,204)" target=3D=
+"_blank">http://www.grodco.com.co/content/tratamiento-de-datos-personales</=
+a></b></div>
+</div>
+</blockquote></div></div>
+
+--000000000000e1c4ae06248499bf--

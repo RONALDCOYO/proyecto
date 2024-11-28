@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Responder Correspondencia{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Responder Correspondencia {{ correspondencia.consecutivo }}</h1>
+    <h2 class="mt-4">Asunto: {{ correspondencia.asunto }}</h2>
+    <h3 class="mb-4">Remitente: {{ correspondencia.remitente }}</h3>
+
+    <!-- Formulario para responder con un archivo adjunto -->
+    <form method="POST" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_respuesta">Respuesta:</label>
+            {{ form.respuesta }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_documento_respuesta">Adjuntar Documento (opcional):</label>
+            {{ form.documento_respuesta }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Responder</button>
+    </form>
+
+    <a href="{% url 'registro_correspondencia' correspondencia.dependencia.empresa.id %}" class="btn btn-secondary mt-3">Volver</a>
+</div>
+{% endblock %}
