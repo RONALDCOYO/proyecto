@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'correspondencia.wsgi.application'
+WSGI_APPLICATION = 'correspondencia.wsgi.app'
 
 
 # Database
