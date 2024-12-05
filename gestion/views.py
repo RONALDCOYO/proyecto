@@ -144,10 +144,15 @@ def registro_correspondencia(request, empresa_id):
 
 
 # Vista para lista la correspondencia
-@login_required
-@user_passes_test(lambda u: u.is_superuser)
+#@login_required
+#@user_passes_test(lambda u: u.is_superuser)
 
 def lista_correspondencia(request):
+    # Obtener usuario y sus dependencias
+    usuario = request.user
+    perfil_usuario = PerfilUsuario.objects.get(user=usuario)
+    dependencias_usuario = perfil_usuario.dependencias.all()
+
     # Obtener todos los filtros del formulario GET
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_fin = request.GET.get('fecha_fin')
@@ -157,7 +162,7 @@ def lista_correspondencia(request):
     adjuntos = request.GET.get('adjuntos')
 
     # Filtrar las correspondencias
-    correspondencias = Correspondencia.objects.all()
+    correspondencias = Correspondencia.objects.filter(dependencia__in=dependencias_usuario)
 
     if fecha_inicio:
         correspondencias = correspondencias.filter(fecha__gte=fecha_inicio)
@@ -195,6 +200,7 @@ def lista_correspondencia(request):
         'empresas': empresas,
         'dependencias': dependencias,
     })
+
 
 
 @login_required
