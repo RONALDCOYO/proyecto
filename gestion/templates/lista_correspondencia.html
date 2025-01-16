@@ -6,24 +6,23 @@
 <div class="container mt-5">
     <h1 class="mb-4">Lista de Correspondencias</h1>
 
-    <!-- Formulario de filtros para exportar a Excel -->
-
-    <form method="get" action="{% url 'exportar_excel' %}" class="mb-4">
+    <!-- Formulario de filtros y exportar a Excel -->
+    <form method="get" action="" class="mb-4">
         <div class="row">
             <div class="col-md-3">
                 <label for="id_fecha_inicio">Fecha Inicio</label>
-                <input type="date" name="fecha_inicio" class="form-control">
+                <input type="date" name="fecha_inicio" class="form-control" value="{{ request.GET.fecha_inicio }}">
             </div>
             <div class="col-md-3">
                 <label for="id_fecha_fin">Fecha Fin</label>
-                <input type="date" name="fecha_fin" class="form-control">
+                <input type="date" name="fecha_fin" class="form-control" value="{{ request.GET.fecha_fin }}">
             </div>
             <div class="col-md-3">
                 <label for="id_empresa">Empresa</label>
                 <select name="empresa" class="form-control">
                     <option value="">-- Todas --</option>
                     {% for empresa in empresas %}
-                    <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
+                    <option value="{{ empresa.id }}" {% if request.GET.empresa == empresa.id|stringformat:"s" %}selected{% endif %}>{{ empresa.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -32,30 +31,33 @@
                 <select name="dependencia" class="form-control">
                     <option value="">-- Todas --</option>
                     {% for dependencia in dependencias %}
-                    <option value="{{ dependencia.id }}">{{ dependencia.nombre }}</option>
+                    <option value="{{ dependencia.id }}" {% if request.GET.dependencia == dependencia.id|stringformat:"s" %}selected{% endif %}>{{ dependencia.nombre }}</option>
                     {% endfor %}
                 </select>
             </div>
         </div>
-   
 
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="id_tipo_correspondencia">Tipo de Correspondencia</label>
                 <select name="tipo_correspondencia" class="form-control">
                     <option value="">-- Todas --</option>
-                    <option value="Carta">Carta</option>
-                    <option value="Memorando">Memorando</option>
-                    <option value="Email">Email</option>
+                    <option value="Carta" {% if request.GET.tipo_correspondencia == 'Carta' %}selected{% endif %}>Carta</option>
+                    <option value="Memorando" {% if request.GET.tipo_correspondencia == 'Memorando' %}selected{% endif %}>Memorando</option>
+                    <option value="Email" {% if request.GET.tipo_correspondencia == 'Email' %}selected{% endif %}>Email</option>
                 </select>
             </div>
             <div class="col-md-3 mt-4">
-                <input type="checkbox" name="adjuntos" value="True">
+                <input type="checkbox" name="adjuntos" value="True" {% if request.GET.adjuntos == 'True' %}checked{% endif %}>
                 <label for="id_adjuntos">Solo con adjuntos</label>
             </div>
             <div class="col-md-6 mt-4">
-                <button type="submit" class="btn btn-primary">Exportar a Excel</button>
+                <button type="submit" name="filter" class="btn btn-primary">Filtrar</button>
+                <button type="submit" name="exportar_excel" class="btn btn-secondary">Exportar a Excel</button>
+                
+                <a href="{% url 'portada' %}" class="btn btn-secondary">Volver a la Portada</a>
             </div>
+            
         </div>
     </form>
 
@@ -86,8 +88,8 @@
                     <td>{{ item.correspondencia.entrada_salida }}</td>
                     <td>{{ item.correspondencia.fecha }}</td>
                     <td>
-                        {% if item.correspondencia.documento %}
-                            <a href="{{ item.correspondencia.documento.url }}" class="btn btn-link">Ver Documento</a>
+                        {% if item.documento_url %}
+                            <a href="{{ item.documento_url }}" class="btn btn-link">Ver Documento</a>
                         {% else %}
                             <span class="text-danger">No hay documento adjunto</span>
                         {% endif %}
@@ -99,54 +101,24 @@
                     <td>
                         {% if item.correspondencia.respondida %}
                             Respondida el {{ item.correspondencia.fecha_respuesta }}
+                            <a href="{% url 'ver_respuesta' item.correspondencia.id %}">Ver Respuesta</a>
                         {% else %}
                             <span class="text-danger">Pendiente</span>
                         {% endif %}
                     </td>
                     <td>
                         {% if not item.correspondencia.respondida and item.correspondencia.necesita_respuesta %}
-                            <a href="{% url 'responder_correspondencia' item.correspondencia.id %}" class="btn btn-primary btn-sm">Responder</a>
+                            <a href="{% url 'responder_correspondencia' item.correspondencia.id %}" class="btn btn-primary">Responder</a>
                         {% endif %}
+                        <!--<a href="{% url 'editar_correspondencia' item.correspondencia.id %}" class="btn btn-warning">Editar</a> -->
+                        <!-- <a href="{% url 'eliminar_correspondencia' item.correspondencia.id %}" class="btn btn-danger">Eliminar</a> -->
                     </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="12" class="text-center">No hay correspondencia registrada.</td>
+
+                                      
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <!-- Botones de acciones generales -->
-    <div class="mt-4">
-        <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar Sesión</a>
-        <a href="{% url 'portada' %}" class="btn btn-secondary">Volver a la Portada</a>
-    </div>
+    
 </div>
-
-<!-- Aquí va el JavaScript para cargar dinámicamente las dependencias -->
-<script>
-    document.getElementById("empresa").addEventListener("change", function() {
-        var empresaId = this.value;
-        var dependenciaSelect = document.getElementById("dependencia");
-        dependenciaSelect.innerHTML = '<option value="">-- Cargando dependencias --</option>';
-        
-        if (empresaId) {
-            fetch(`/filtrar_dependencias/?empresa_id=` + empresaId)
-                .then(response => response.json())
-                .then(data => {
-                    dependenciaSelect.innerHTML = '<option value="">-- Todas --</option>';
-                    data.forEach(function(dependencia) {
-                        var option = document.createElement("option");
-                        option.value = dependencia.id;
-                        option.text = dependencia.nombre;
-                        dependenciaSelect.appendChild(option);
-                    });
-                });
-        } else {
-            dependenciaSelect.innerHTML = '<option value="">-- Selecciona una empresa primero --</option>';
-        }
-    });
-</script>
-
 {% endblock %}

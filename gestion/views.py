@@ -1,4 +1,5 @@
 import openpyxl
+import csv
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -148,10 +149,18 @@ def registro_correspondencia(request, empresa_id):
 #@user_passes_test(lambda u: u.is_superuser)
 
 def lista_correspondencia(request):
-    # Obtener usuario y sus dependencias
     usuario = request.user
-    perfil_usuario = PerfilUsuario.objects.get(user=usuario)
-    dependencias_usuario = perfil_usuario.dependencias.all()
+
+    try:
+        perfil_usuario = PerfilUsuario.objects.get(user=usuario)
+        dependencias_usuario = perfil_usuario.dependencias.all()
+    except PerfilUsuario.DoesNotExist:
+        if usuario.is_superuser:
+            # Si el usuario es superusuario, se le muestra todo
+            dependencias_usuario = Dependencia.objects.all()
+        else:
+            # Si no, redirigir o mostrar un mensaje de error adecuado
+            return redirect('crear_perfil')  # Ajusta esto según tu lógica
 
     # Obtener todos los filtros del formulario GET
     fecha_inicio = request.GET.get('fecha_inicio')
@@ -177,6 +186,30 @@ def lista_correspondencia(request):
     if adjuntos:
         correspondencias = correspondencias.exclude(documento="")
 
+    # Verificar si se solicita la exportación a Excel
+    if 'exportar_excel' in request.GET:
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="correspondencias.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Consecutivo', 'Tipo', 'Dependencia', 'Entrada/Salida', 'Fecha', 'Documento', 'Asunto', 'Remitente', 'Destinatario', 'Necesita Respuesta', 'Estado de Respuesta'])
+
+        for correspondencia in correspondencias:
+            writer.writerow([
+                correspondencia.consecutivo,
+                correspondencia.tipo_correspondencia,
+                correspondencia.dependencia.nombre,
+                correspondencia.entrada_salida,
+                correspondencia.fecha,
+                correspondencia.documento.url if correspondencia.documento else '',
+                correspondencia.asunto,
+                correspondencia.remitente,
+                correspondencia.destinatario,
+                'Sí' if correspondencia.necesita_respuesta else 'No',
+                'Respondida' if correspondencia.respondida else 'Pendiente'
+            ])
+        return response
+
     # Crear el contexto de correspondencias con la URL del documento
     context = []
     for correspondencia in correspondencias:
@@ -184,7 +217,7 @@ def lista_correspondencia(request):
             documento_url = correspondencia.documento.url
         else:
             documento_url = None
-        
+
         context.append({
             'correspondencia': correspondencia,
             'documento_url': documento_url,
@@ -200,7 +233,6 @@ def lista_correspondencia(request):
         'empresas': empresas,
         'dependencias': dependencias,
     })
-
 
 
 @login_required
