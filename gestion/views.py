@@ -593,6 +593,7 @@ def editar_correspondencia(request, id):
     return render(request, 'gestion/editar_correspondencia.html', {'form': form})
 
 # Eliminar Correspondencia
+#prueba de git
 @login_required
 def eliminar_correspondencia(request, id):
     correspondencia = get_object_or_404(Correspondencia, id=id)

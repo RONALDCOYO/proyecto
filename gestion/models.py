@@ -50,6 +50,7 @@ class Correspondencia(models.Model):
         ('Memorando', 'Memorando'),
         ('Email', 'Email'),
         ('DP', 'DP'),
+        ('Cotizacion', 'Cotizacion'),
     ]
 
     ENTRADA_SALIDA = [
@@ -120,8 +121,6 @@ class Correspondencia(models.Model):
         return f"GRD-{self.dependencia.codigo}-{timezone.now().year}-{self.consecutivo}"
 
     
-
-
 
 class RespuestaCorrespondencia(models.Model):
     correspondencia = models.ForeignKey(Correspondencia, on_delete=models.CASCADE)

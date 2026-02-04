@@ -92,6 +92,8 @@
                             <a href="{{ item.documento_url }}" class="btn btn-link">Ver Documento</a>
                         {% else %}
                             <span class="text-danger">No hay documento adjunto</span>
+                            <!-- Enlace para agregar documento si no hay adjunto -->
+                            <a href="{% url 'adjuntar_documento' item.correspondencia.id %}" class="btn btn-warning">Adjuntar Documento</a>
                         {% endif %}
                     </td>
                     <td>{{ item.correspondencia.asunto }}</td>
@@ -110,11 +112,9 @@
                         {% if not item.correspondencia.respondida and item.correspondencia.necesita_respuesta %}
                             <a href="{% url 'responder_correspondencia' item.correspondencia.id %}" class="btn btn-primary">Responder</a>
                         {% endif %}
-                        <!--<a href="{% url 'editar_correspondencia' item.correspondencia.id %}" class="btn btn-warning">Editar</a> -->
+                        <a href="{% url 'editar_correspondencia' item.correspondencia.id %}" class="btn btn-warning">Editar</a>
                         <!-- <a href="{% url 'eliminar_correspondencia' item.correspondencia.id %}" class="btn btn-danger">Eliminar</a> -->
                     </td>
-
-                                      
                 </tr>
             {% endfor %}
         </tbody>
